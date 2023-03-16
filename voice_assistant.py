@@ -20,13 +20,14 @@ messages  = [{"role": "system", "content": f"{mode}"}]
 # pyttsx3 setup
 engine = pyttsx3.init()
 voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[1].id) # 0 for male, 1 for female
+engine.setProperty('rate', 220) #define speech rate
+engine.setProperty('voice', voices[0].id) # 0 for male, 1 for female
 
 # speech recognition set-up
 r = sr.Recognizer()
 mic = sr.Microphone(device_index=0)
 r.dynamic_energy_threshold=False
-r.energy_threshold = 400
+r.energy_threshold = 700
 
 def whisper(audio):
     with open('speech.wav','wb') as f:
@@ -49,7 +50,7 @@ def save_conversation(save_foldername):
     '''
     os.makedirs(save_foldername, exist_ok=True)
 
-    base_filename = 'conversation'
+    base_filename = 'interview'
     suffix = 0
     filename = os.path.join(save_foldername, f'{base_filename}_{suffix}.txt')
 
