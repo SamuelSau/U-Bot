@@ -28,7 +28,6 @@ mic = sr.Microphone(device_index=0)
 r.dynamic_energy_threshold=False
 r.energy_threshold = 400
 
-
 def whisper(audio):
     with open('speech.wav','wb') as f:
         f.write(audio.get_wav_data())
@@ -41,7 +40,6 @@ def whisper(audio):
     print(user_input)
     return user_input
 
-
 def save_conversation(save_foldername):
     '''
     Checks the folder for previous conversations and will get the next suffix that has not been used yet.  
@@ -49,7 +47,6 @@ def save_conversation(save_foldername):
     Args:
         save_foldername (str) : Takes in the path to save the conversation to.
     '''
-    
     os.makedirs(save_foldername, exist_ok=True)
 
     base_filename = 'conversation'
@@ -81,13 +78,11 @@ def save_inprogress(suffix, save_foldername):
     with open(filename, 'w') as file:
         json.dump(messages, file, indent=4)
 
-
 # grab script location
 script_dir = os.path.dirname(os.path.abspath(__file__))
 foldername = "voice_assistant"
 save_foldername = os.path.join(script_dir,f"conversations/{foldername}")
 suffix = save_conversation(save_foldername)
-
 
 # main while loop where the conversation occurs
 while True:
@@ -106,7 +101,7 @@ while True:
     messages.append({"role" : "user", "content" : user_input})
 
     completion = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo-0301",
+            model="gpt-3.5-turbo",
             messages=messages,
             temperature=0.8
         )    
