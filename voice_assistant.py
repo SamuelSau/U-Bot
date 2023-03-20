@@ -3,8 +3,7 @@ import speech_recognition as sr
 import os
 import json
 from dotenv import load_dotenv
-from elevenlabs import ElevenLabs
-import os
+from elevenlabslib import *
 
 load_dotenv()
 
@@ -12,14 +11,12 @@ load_dotenv()
 ELEVEN_LAB_KEY = os.environ.get("ELEVEN_LAB_KEY")
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
-eleven = ElevenLabs(ELEVEN_LAB_KEY) # Replace api_key with your own key
+user = ElevenLabsUser(ELEVEN_LAB_KEY) # Replace api_key with your own key
 
 # Get a Voice object, by name or UUID
-voice = eleven.voices["Arnold"]
-
+voice_choice = "Cory Computer"
+voice = user.get_voices_by_name(voice_choice)[0]
 # # Generate the TTS
-# audio = voice.generate("It's a beautiful day.")
-
 # # Save the audio file
 # audio.save("my_first_tts")
 
@@ -28,11 +25,16 @@ personality = "personality.txt"
 usewhisper = True
 
 # openAI set-up
-openai.api_key = os.getenv('API_KEY')
+openai.api_key = os.getenv('OPENAI_API_KEY')
 with open(personality, "r") as file:
     mode = file.read()
 messages  = [{"role": "system", "content": f"{mode}"}]
 
+######INITIATE VOICE READER#########
+
+
+
+##################################
 r = sr.Recognizer()
 mic = sr.Microphone(device_index=0)
 r.dynamic_energy_threshold=False
@@ -120,6 +122,5 @@ while True:
     messages.append({"role": "assistant", "content": response})
     print(f"\n{response}\n")
     save_inprogress(suffix, save_foldername)
-    
-    voice.generate(response)
+    voice.generate_and_play_audio(response, playInBackground=False)
 
