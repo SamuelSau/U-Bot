@@ -1,13 +1,29 @@
 import openai
 import speech_recognition as sr
-import pyttsx3
 import os
 import json
 from dotenv import load_dotenv
+from elevenlabs import ElevenLabs
+import os
 
-# Load the .env file
 load_dotenv()
 
+#Get the API keys from the .env file
+ELEVEN_LAB_KEY = os.environ.get("ELEVEN_LAB_KEY")
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+
+eleven = ElevenLabs(ELEVEN_LAB_KEY) # Replace api_key with your own key
+
+# Get a Voice object, by name or UUID
+voice = eleven.voices["Arnold"]
+
+# # Generate the TTS
+# audio = voice.generate("It's a beautiful day.")
+
+# # Save the audio file
+# audio.save("my_first_tts")
+
+# Load the .env file
 personality = "personality.txt"
 usewhisper = True
 
@@ -17,13 +33,6 @@ with open(personality, "r") as file:
     mode = file.read()
 messages  = [{"role": "system", "content": f"{mode}"}]
 
-# pyttsx3 setup
-engine = pyttsx3.init()
-voices = engine.getProperty('voices')
-engine.setProperty('rate', 220) #define speech rate
-engine.setProperty('voice', voices[0].id) # 0 for male, 1 for female
-
-# speech recognition set-up
 r = sr.Recognizer()
 mic = sr.Microphone(device_index=0)
 r.dynamic_energy_threshold=False
@@ -112,5 +121,5 @@ while True:
     print(f"\n{response}\n")
     save_inprogress(suffix, save_foldername)
     
-    engine.say(f'{response}')
-    engine.runAndWait()
+    voice.generate(response)
+
