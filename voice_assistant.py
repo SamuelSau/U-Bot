@@ -11,18 +11,15 @@ load_dotenv()
 ELEVEN_LAB_KEY = os.environ.get("ELEVEN_LAB_KEY")
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
-user = ElevenLabsUser(ELEVEN_LAB_KEY) # Replace api_key with your own key
+user = ElevenLabsUser(ELEVEN_LAB_KEY) # Intiaite user object
 
 # Get a Voice object, by name or UUID
-voice_choice = "Cory Computer"
+voice_choice = "Bella"
 voice = user.get_voices_by_name(voice_choice)[0]
-# # Generate the TTS
-# # Save the audio file
-# audio.save("my_first_tts")
 
-# Load the .env file
 personality = "personality.txt"
 usewhisper = True
+isEnabled = False # voice is disabled by default
 
 # openAI set-up
 openai.api_key = os.getenv('OPENAI_API_KEY')
@@ -115,12 +112,15 @@ while True:
     completion = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=messages,
-            temperature=0.8
+            temperature=0.8 #Influences output of chat model
+            #For temperature, higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. 
         )    
 
     response = completion.choices[0].message.content
+    
     messages.append({"role": "assistant", "content": response})
     print(f"\n{response}\n")
     save_inprogress(suffix, save_foldername)
-    voice.generate_and_play_audio(response, playInBackground=False)
 
+    if isEnabled:
+        voice.generate_and_play_audio(response, playInBackground=False)
