@@ -4,7 +4,7 @@ import os
 import json
 from dotenv import load_dotenv
 from elevenlabslib import *
-
+ 
 load_dotenv()
 
 #Get the API keys from the .env file
@@ -19,7 +19,7 @@ voice = user.get_voices_by_name(voice_choice)[0]
 
 personality = "personality.txt"
 usewhisper = True
-isEnabled = False # voice is disabled by default
+isEnabled = False # Eleven labs voice is disabled by default
 
 # openAI set-up
 openai.api_key = os.getenv('OPENAI_API_KEY')
@@ -28,8 +28,6 @@ with open(personality, "r") as file:
 messages  = [{"role": "system", "content": f"{mode}"}]
 
 ######INITIATE VOICE READER#########
-
-
 
 ##################################
 r = sr.Recognizer()
@@ -99,6 +97,7 @@ while True:
         print("\nListening...")
         r.adjust_for_ambient_noise(source, duration = 0.5)
         audio = r.listen(source)
+
         try:
             if usewhisper:
                 user_input = whisper(audio)
