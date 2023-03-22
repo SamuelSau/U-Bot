@@ -36,10 +36,10 @@ pg_conn = psycopg2.connect(
     password = "lobsterpaste"
 )
 
-#Cursor can be used to execute SQL commands
+# Cursor can be used to execute SQL commands
 sql = pg_conn.cursor()
     # Syntax: sql.execute("SQL COMMAND")
-    # If query is a selection, use sql.fetchall() to get the results
+    # If query is a selection, sql.fetchall() will return the results as a list of tuples
 
 
 ######INITIATE VOICE READER#########
@@ -139,5 +139,6 @@ while True:
     if isEnabled:
         voice.generate_and_play_audio(response, playInBackground=False)
 
-    # if user_input.lower() == "quit": #quit the program
-    #     break
+# Close the connection to the database
+pg_conn.close()
+sql.close()
