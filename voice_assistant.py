@@ -4,6 +4,7 @@ import os
 import json
 from dotenv import load_dotenv
 from elevenlabslib import *
+import psycopg2
  
 load_dotenv()
 
@@ -26,6 +27,20 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
 with open(personality, "r") as file:
     mode = file.read()
 messages  = [{"role": "system", "content": f"{mode}"}]
+
+#Initialize connection with postgresql database
+pg_conn = psycopg2.connect(
+    host = "gitready.cxz7x2iimqnj.us-east-2.rds.amazonaws.com",
+    database = "gitready",
+    user = "postgres",
+    password = "lobsterpaste"
+)
+
+#Cursor can be used to execute SQL commands
+sql = pg_conn.cursor()
+    # Syntax: sql.execute("SQL COMMAND")
+    # If query is a selection, use sql.fetchall() to get the results
+
 
 ######INITIATE VOICE READER#########
 
@@ -123,3 +138,6 @@ while True:
 
     if isEnabled:
         voice.generate_and_play_audio(response, playInBackground=False)
+
+    # if user_input.lower() == "quit": #quit the program
+    #     break
