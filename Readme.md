@@ -12,7 +12,7 @@ voice_assistant.py: This is the main file that instantiates the microphone, Chat
 personality.txt: This file defines the behavior of the  voice assistant used to conduct technical interviews.
 
 ## Credits
-This web application was developed by *Samuel Sau* *Cory Zastoupil* *Janpaul Paredero* and *Pedro Jmir* as part of a project for Hackabull 2023 at the University of South Florida. 
+This web application was developed by *Samuel Sau* *Cory Zastoupil* *Janpaul Paredero* and *Pedro Mir Reynoso* as part of a project for Hackabull 2023 at the University of South Florida. 
 
 ## License
 This project is licensed under the MIT License.
