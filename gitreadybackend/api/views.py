@@ -8,13 +8,25 @@ import traceback
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
-@api_view(['POST'])
-def get_chatgpt_response(request):
-    user_input = request.data.get('user_input', '')
-    if not user_input:
-        return Response({"error": "No user input provided."}, status=status.HTTP_400_BAD_REQUEST)
+def speech_to_text(audio):
+    with open('speech.wav','wb') as f:
+        f.write(audio.read())
+    speech = open('speech.wav', 'rb')
+    completion = openai.Audio.transcribe(
+        model = "whisper-1",
+        file=speech
+    )
+    user_input = completion['text']
+    return user_input
+
+@api_view(['POST']) 
+def get_chatgpt_response(request): # requests the chatgpt response from the openai api
+    audio_file = request.FILES.get('audio_file')
+    if not audio_file:
+        return Response({"error": "No audio file provided."}, status=status.HTTP_400_BAD_REQUEST)
 
     try:
+        user_input = speech_to_text(audio_file)
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": user_input}],
