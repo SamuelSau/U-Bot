@@ -5,6 +5,7 @@ import json
 from dotenv import load_dotenv
 from elevenlabslib import *
 import psycopg2
+import keyboard
  
 load_dotenv()
 
@@ -31,7 +32,7 @@ messages  = [{"role": "system", "content": f"{mode}"}]
 #Initialize connection with postgresql database
 pg_conn = psycopg2.connect(
     host = "gitready.cxz7x2iimqnj.us-east-2.rds.amazonaws.com",
-    database = "gitready",
+    database = "postgres",
     user = "postgres",
     password = "lobsterpaste"
 )
@@ -99,7 +100,12 @@ def save_inprogress(suffix, save_foldername):
 
     with open(filename, 'w') as file:
         json.dump(messages, file, indent=4)
-
+def listen_convo():
+    try: 
+        return r.listen(source, timeout=5, phrase_time_limit=5)
+    except:
+        print("TimedOut")
+        listen_convo()
 # grab script location
 script_dir = os.path.dirname(os.path.abspath(__file__))
 foldername = "voice_assistant"
@@ -111,8 +117,9 @@ while True:
     with mic as source:
         print("\nListening...")
         r.adjust_for_ambient_noise(source, duration = 0.5)
-        audio = r.listen(source)
 
+        audio = listen_convo()
+        print('Done Listening')
         try:
             if usewhisper:
                 user_input = whisper(audio)
