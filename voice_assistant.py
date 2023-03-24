@@ -139,6 +139,7 @@ while True:
 
     response = completion.choices[0].message.content
     
+    
     messages.append({"role": "assistant", "content": response})
     print(f"\n{response}\n")
     save_inprogress(suffix, save_foldername)
