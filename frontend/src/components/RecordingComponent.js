@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ReactMic } from 'react-mic';
+import styles from './RecordingComponent.module.css';
 
 const RecordingComponent = () => {
 	const [recording, setRecording] = useState(false);
@@ -43,41 +44,36 @@ const RecordingComponent = () => {
 		}
 	};
 
-	const downloadAudio = () => {
-		if (audioBlob) {
-			const url = URL.createObjectURL(audioBlob);
-			const link = document.createElement('a');
-			link.href = url;
-			link.setAttribute('download', 'audio.wav');
-			document.body.appendChild(link);
-			link.click();
-			document.body.removeChild(link);
-		} else {
-			alert('No audio recording available.');
-		}
-	};
-
 	return (
-		<div>
-			<h1>Recording Component</h1>
+		<div className={styles.container}>
+			<h1 className={styles.heading}>Recording Component</h1>
 			<ReactMic
 				record={recording}
-				className='sound-wave'
+				className={`${styles.soundWave} sound-wave`}
 				onStop={onStop}
 				onData={onData}
 				mimeType='audio/wav'
 			/>
-			<button onClick={startRecording} disabled={recording}>
+			<button
+				className={styles.button}
+				onClick={startRecording}
+				disabled={recording}
+			>
 				Start Recording
 			</button>
-			<button onClick={stopRecording} disabled={!recording}>
+			<button
+				className={styles.button}
+				onClick={stopRecording}
+				disabled={!recording}
+			>
 				Stop Recording
 			</button>
-			<button onClick={handleSubmit} disabled={!audioBlob}>
+			<button
+				className={styles.button}
+				onClick={handleSubmit}
+				disabled={!audioBlob}
+			>
 				Submit Recording
-			</button>
-			<button onClick={downloadAudio} disabled={!audioBlob}>
-				Download Audio
 			</button>
 		</div>
 	);

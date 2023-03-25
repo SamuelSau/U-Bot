@@ -65,7 +65,6 @@ def get_chatgpt_response(request):
                                             "similarity_boost": 0
         }}
 
-        
         warnings.simplefilter("ignore", InsecureRequestWarning)
         tts_response = requests.post(eleven_labs_url, headers=headers, json=data, verify=False)
         print("Eleven Labs response:", tts_response.text)
@@ -84,7 +83,7 @@ def get_chatgpt_response(request):
             "audio_base64": audio_base64,
         }
 
-        return Response(custom_response)
+        return Response(custom_response, status=status.HTTP_200_OK)
 
     except Exception as e:
         return Response({"error": f"Error: {str(e)}\n{traceback.format_exc()}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
