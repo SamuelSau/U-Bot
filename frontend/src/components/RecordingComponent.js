@@ -38,7 +38,8 @@ const RecordingComponent = () => {
 					body: formData,
 				}
 			);
-			console.log('Response:', response);
+      const data = await response.json();
+			console.log('Response:', data);
 		} catch (error) {
 			console.error('Error:', error);
 		}
