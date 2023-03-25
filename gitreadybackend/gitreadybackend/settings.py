@@ -83,9 +83,21 @@ WSGI_APPLICATION = 'gitreadybackend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'gitreadylocal',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'gitready',
+    #     'USER': 'postgres',
+    #     'PASSWORD': 'lobsterpaste',
+    #     'HOST': 'gitready.cxz7x2iimqnj.us-east-2.rds.amazonaws.com',
+    #     'PORT': '5432',
+    # }
 }
 
 

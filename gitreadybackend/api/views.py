@@ -7,6 +7,12 @@ from rest_framework.response import Response
 from rest_framework import status
 import traceback
 from .models import Conversation, Message
+import requests
+from django.http import FileResponse
+import base64
+import json
+import warnings
+from urllib3.exceptions import InsecureRequestWarning
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
 ELEVEN_LAB_KEY = os.environ.get("ELEVEN_LAB_KEY")
@@ -49,6 +55,36 @@ def get_chatgpt_response(request):
         chatgpt_response = response.choices[0].message.content
         print("ChatGPT response:", chatgpt_response)
 
-        return Response({"chatgpt_response": chatgpt_response})
+       # Synthesize ChatGPT response as audio using Eleven Labs API
+        print("Synthesizing text to speech...")
+        eleven_labs_url = "https://api.elevenlabs.io/v1/text-to-speech/EXAVITQu4vr4xnSDxMaL"
+        api_key = os.environ.get("ELEVEN_LAB_KEY")
+        headers = {"xi-api-key": api_key}
+        data = {"text": chatgpt_response, "voice_settings": {
+                                            "stability": 0,
+                                            "similarity_boost": 0
+        }}
+
+        
+        warnings.simplefilter("ignore", InsecureRequestWarning)
+        tts_response = requests.post(eleven_labs_url, headers=headers, json=data, verify=False)
+        print("Eleven Labs response:", tts_response.text)
+
+        if tts_response.status_code != 200:
+            raise Exception(f"Error interacting with Eleven Labs API: {tts_response.text}")
+
+        # Convert audio data to base64
+        audio_base64 = base64.b64encode(tts_response.content).decode("utf-8")
+
+        #Create a custom response with JSON data and the base64-encoded audio
+
+        custom_response = {
+            "user_input": user_input,
+            "chatgpt_response": chatgpt_response,
+            "audio_base64": audio_base64,
+        }
+
+        return Response(custom_response)
+
     except Exception as e:
-        return Response({"error": f"Error interacting with OpenAI API: {str(e)}\n{traceback.format_exc()}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({"error": f"Error: {str(e)}\n{traceback.format_exc()}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
