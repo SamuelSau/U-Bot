@@ -1,0 +1,1 @@
+self.__REACT_LOADABLE_MANIFEST={"index.js -> @/components/RecordingComponent":{"id":"index.js -> @/components/RecordingComponent","files":["static/chunks/src_components_RecordingComponent_js.js"]}}
