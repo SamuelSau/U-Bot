@@ -13,7 +13,8 @@ const RecordingComponent = () => {
 
   const stopRecording = () => {
     setRecording(false);
-    const audioBlob = new Blob(audioChunks, { type: "audio/webm" });
+    const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+    console.log("Audio blob type:", audioBlob.type);
     setAudioBlob(audioBlob);
   };
 
@@ -41,15 +42,29 @@ const RecordingComponent = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData();
-    formData.append("audio", audioBlob);
+    formData.append("audio_file", new File([audioBlob], "audio.wav", { type: "audio/wav" }));
     try {
-      const response = await fetch("https://your-api-endpoint.com", {
+      const response = await fetch('http://127.0.0.1:8000/api/get_chatgpt_response/', {
         method: "POST",
         body: formData,
       });
       console.log("Response:", response);
     } catch (error) {
       console.error("Error:", error);
+    }
+  };
+
+  const downloadAudio = () => {
+    if (audioBlob) {
+      const url = URL.createObjectURL(audioBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "audio.wav");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      alert("No audio recording available.");
     }
   };
 
@@ -64,6 +79,9 @@ const RecordingComponent = () => {
       </button>
       <button onClick={handleSubmit} disabled={!audioBlob}>
         Submit Recording
+      </button>
+      <button onClick={downloadAudio} disabled={!audioBlob}>
+        Download Audio
       </button>
       {error && <p>Error: {error.message}</p>}
     </div>
