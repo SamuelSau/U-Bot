@@ -19,7 +19,7 @@ from dotenv import load_dotenv
 from django.views.decorators.csrf import csrf_exempt
 load_dotenv()
 ELEVEN_LABS_URL = "EXAVITQu4vr4xnSDxMaL"
-openai.api_key = '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'
+openai.api_key = os.environ.get("OPENAI_API_KEY")
 ELEVEN_LAB_KEY = os.environ.get("ELEVEN_LAB_KEY")
 DEFAULT_INITIAL_PROMPT = "Your name is Ron and you are a senior software engineer that has worked at Google for over 20 years. You are interviewing a candidate by conducting a behavioral software engineer interview for a software engineer role. You will be asking and clarifying easy questions. Limit your response to 50 words. "
 
@@ -107,6 +107,7 @@ def get_chatgpt_response(request):
         }}
 
         warnings.simplefilter("ignore", InsecureRequestWarning)
+        print(ELEVEN_LAB_KEY)
         print("Sending request to Eleven Labs...")
         tts_response = requests.post(eleven_labs_url, headers=headers, json=data, verify=False)
         #print("Eleven Labs response:", tts_response.text)
