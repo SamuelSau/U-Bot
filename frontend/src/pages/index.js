@@ -17,9 +17,15 @@ import dynamic from 'next/dynamic';
 const DynamicVoiceRecorder = dynamic(() => import('@/components/RecordingComponent'), { ssr: false });
 export default function Home() {
 const [text, setText] = useState("");
+const [modalIsOpen, setModalIsOpen] = useState(false);
 
 const handleTextChange = (event) => {
   setText(event.target.value);
+};
+
+const handleModalClose = () => {
+  console.log('Modal closed');
+  // SEND PERSONALITY DESCRIPTION TO BACKEND
 };
 
 useEffect(() => {
@@ -36,7 +42,7 @@ useEffect(() => {
       </Head>
       <main className={styles.main}>
       <Menu fixed="top" inverted>
-  <Container className={navbarStyles.menuContainer}>
+  <Container className={navbarStyles.menuContainer} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
     <Menu.Item as="a" header href="https://nextjs.org" className={navbarStyles.menuItem}>
       <h1 className={styles.title}>Welcome to U-BOT!</h1>
     </Menu.Item>
@@ -50,12 +56,13 @@ useEffect(() => {
         options={[
           { key: 'bella', value: 'Bella', text: 'Bella' },
           { key: 'arnold', value: 'Arnold', text: 'Arnold' },
-        ]}
+        ]} 
+        style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
       />
     </Menu.Item>
     <Modal
-      closeIcon
-      trigger={<Button secondary className={navbarStyles.menuItem}>Edit Personality</Button>}
+      closeIcon onClick={() => setModalIsOpen(true)} isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} onClose={handleModalClose}
+      trigger={<Button secondary className={navbarStyles.menuItem} style={{ maxWidth: '300px', width: '100%', fontSize: '24px'  }}>Edit Personality</Button>}
     >
       <Modal.Header>Personality Description</Modal.Header>
       <Modal.Content>
