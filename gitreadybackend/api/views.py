@@ -98,7 +98,7 @@ def get_chatgpt_response(request):
 
         custom_response = {
             "user_input": user_input,
-            "chatgpt_response": chatgpt_response,
+            "messages": messages,
             "audio_base64": audio_base64,
         }
 
