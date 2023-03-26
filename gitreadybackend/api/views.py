@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.forms import model_to_dict
 from django.shortcuts import render
 import os
 import openai
@@ -17,7 +18,7 @@ from urllib3.exceptions import InsecureRequestWarning
 from dotenv import load_dotenv
 load_dotenv()
 
-openai.api_key = os.getenv('OPENAI_API_KEY')
+openai.api_key = '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'
 ELEVEN_LAB_KEY = os.environ.get("ELEVEN_LAB_KEY")
 DEFAULT_INITIAL_PROMPT = "Your name is Ron and you are a senior software engineer that has worked at Google for over 20 years. You are interviewing a candidate by conducting a behavioral software engineer interview for a software engineer role. You will be asking and clarifying easy questions. Try to be as witty and humourous as possible. Limit your response to 50 words. "
 
@@ -38,6 +39,11 @@ def speech_to_text(audio):
     user_input = completion['text']
     return user_input
 
+def create_message(content, role):
+    message = Message(content=content, role=role)
+    message.save()
+    return message
+
 def get_initial_prompt():
     with open('personality.txt', 'r') as file:
         return file.read()
@@ -45,15 +51,15 @@ def get_initial_prompt():
 @api_view(['POST'])
 def set_initial_prompt(request):
     custom_prompt = request.data.get('custom_prompt')
-    request.session.flush()
+    # Flush all messages
+    Message.objects.all().delete()
     if custom_prompt:
         combined_prompt = f"{DEFAULT_INITIAL_PROMPT}{custom_prompt}"
-        request.session['initial_prompt'] = combined_prompt
-        print ("Initial prompt set to: ", combined_prompt)
+        create_message(combined_prompt, Message.SYSTEM)
         
         return JsonResponse({"message": "Initial prompt updated successfully."}, status=status.HTTP_200_OK)
     else:
-        request.session['initial_prompt'] = DEFAULT_INITIAL_PROMPT
+        create_message(DEFAULT_INITIAL_PROMPT, Message.SYSTEM)
         return JsonResponse({"error": "No custom prompt provided."}, status=status.HTTP_400_BAD_REQUEST)
 
 # When an audio file is sent to the server, this function is called and returns the chatgpt response.
@@ -67,18 +73,17 @@ def get_chatgpt_response(request):
 
     try:
         user_input = speech_to_text(audio_file)
+        messages = [model_to_dict(message, exclude=["id"]) for message in Message.objects.all()]
 
-        if not request.session.get('messages'):
-            initial_prompt = request.session.get('initial_prompt', DEFAULT_INITIAL_PROMPT)
-            messages = [{'content': initial_prompt, 'role': Message.SYSTEM}]
-            request.session['messages'] = messages
-            
-        else:
-            messages = request.session['messages']
-        # Format the conversation history for ChatGPTsystem
-        print("prompt:", initial_prompt)
-        user_message = {'content': user_input, 'role': Message.USER}
-        messages.append(user_message)
+        initial_prompt = Message.objects.filter(role=Message.SYSTEM).first()
+        if not initial_prompt:
+            initial_prompt = create_message(DEFAULT_INITIAL_PROMPT, Message.SYSTEM)
+            messages.append(model_to_dict(initial_prompt, exclude=["id"]))
+
+
+        user_message = create_message(user_input, Message.USER)
+        messages.append(model_to_dict(user_message, exclude=["id"]))
+        print(messages)
     
         print("Getting ChatGPT response...")
         response = openai.ChatCompletion.create(
@@ -87,12 +92,9 @@ def get_chatgpt_response(request):
             temperature=0.8,
         )
         chatgpt_response = response.choices[0].message.content
-        assistant_message = {'content': chatgpt_response, 'role': Message.ASSISTANT}
-        messages.append(assistant_message)  
-
-        request.session['messages'] = messages
-
-        request.session.modified = True
+        
+        assistant_message = create_message(chatgpt_response, Message.ASSISTANT)
+        messages.append(model_to_dict(assistant_message, exclude=["id"]))
 
        # Synthesize ChatGPT response as audio using Eleven Labs API
         eleven_labs_url = "https://api.elevenlabs.io/v1/text-to-speech/EXAVITQu4vr4xnSDxMaL"
@@ -130,6 +132,6 @@ def get_chatgpt_response(request):
     
 @api_view(['POST'])
 def end_session(request):
-    # Clear the conversation data from the session
-    request.session.flush()
+    # Clear all messages from the database
+    Message.objects.all().delete()
     return JsonResponse({"success": True})
