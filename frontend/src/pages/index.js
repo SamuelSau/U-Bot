@@ -46,8 +46,10 @@ export default function Home() {
 	const [chatMessages, setChatMessages] = useState([]);
 
 	const handleMessagesUpdate = (newMessages) => {
-		setChatMessages(newMessages);
-	};
+    setChatMessages((prevState) => {
+      return [...newMessages];
+    });
+  };
 
 	useEffect(() => {
 		console.log(text);
