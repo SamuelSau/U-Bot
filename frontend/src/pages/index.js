@@ -3,6 +3,10 @@ import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import { useState, useEffect } from 'react';
+import { Menu, Container, Dropdown } from 'semantic-ui-react';
+import Link from 'next/link';
+
+
 import dynamic from 'next/dynamic';
 //import VoiceRecorder from '@/components/VoiceRecorder'
 const DynamicVoiceRecorder = dynamic(() => import('@/components/RecordingComponent'), { ssr: false });
@@ -16,15 +20,28 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">U-BOT!</a>
-        </h1>
-        <p>Please select your voice</p>
-        {/* create a dropdown to select a name */}
-        <select name="name">
-          <option value="Bella">Bella</option>
-          <option value="Arnold">Arnold</option>
-        </select>
+        <Menu fixed="top" inverted>
+  <Container>
+  <Menu.Item as="a" header href="https://nextjs.org">
+  <h1 className={styles.title}>Welcome to U-BOT!</h1>
+</Menu.Item>
+
+    <Menu.Item>
+      <p>Please select your voice</p>
+    </Menu.Item>
+    <Menu.Item>
+      <Dropdown
+        placeholder="Select a name"
+        selection
+        options={[
+          { key: 'bella', value: 'Bella', text: 'Bella' },
+          { key: 'arnold', value: 'Arnold', text: 'Arnold' },
+        ]}
+      />
+    </Menu.Item>
+  </Container>
+</Menu>
+
         <h1>Voice Recorder</h1>
         <DynamicVoiceRecorder />
         
