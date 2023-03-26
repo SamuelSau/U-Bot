@@ -54,6 +54,7 @@ const RecordingComponent = ({ onMessagesUpdate }) => {
 		  const data = await response.json();
 		  console.log('Response:', data);
 		  setMessages((prevMessages) => [...prevMessages, ...data.messages]); // Append new messages to the existing array
+		  console.log("THE MESSAGES RECIEVED OR SOMTHIN", messages)
 		  setBase64Audio(data.audio_base64); // Store the Base64 audio data
 		  // Call the onMessagesUpdate prop with the new messages
 		  if (onMessagesUpdate) {
