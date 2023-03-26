@@ -1,0 +1,11 @@
+.menuContainer {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .menuItem {
+    flex: 1;
+    text-align: center;
+    background-color: black;
+  }
+  

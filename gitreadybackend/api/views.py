@@ -14,6 +14,8 @@ import base64
 import json
 import warnings
 from urllib3.exceptions import InsecureRequestWarning
+from dotenv import load_dotenv
+load_dotenv()
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
 ELEVEN_LAB_KEY = os.environ.get("ELEVEN_LAB_KEY")
