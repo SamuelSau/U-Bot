@@ -5,8 +5,9 @@
 	width: 100%;
 	padding: 2rem;
 	box-sizing: border-box;
-	background-color: #aa00ff;
+	background-color: #f1f1f1;
     border-radius: 20px;
+	border: 1px gray;
 }
 
 .h1 {
@@ -45,6 +46,7 @@
 .soundWave {
     width: 300px; /* Adjust the width as needed */
     height: 100px; /* Adjust the height as needed */
+	
 }
 
 .App {
@@ -62,4 +64,7 @@
   
   .assistant-message {
     text-align: left;
+  }
+  .autoPlay {
+	visibility: hidden;
   }

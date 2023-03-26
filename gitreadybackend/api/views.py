@@ -80,7 +80,6 @@ def get_chatgpt_response(request):
             initial_prompt = create_message(DEFAULT_INITIAL_PROMPT, Message.SYSTEM)
             messages.append(model_to_dict(initial_prompt, exclude=["id"]))
 
-
         user_message = create_message(user_input, Message.USER)
         messages.append(model_to_dict(user_message, exclude=["id"]))
         print(messages)
