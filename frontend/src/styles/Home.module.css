@@ -5,6 +5,7 @@
   align-items: center;
   padding: 6rem;
   min-height: 100vh;
+  background-image: linear-gradient(to right, rgb(102, 201, 214), #e4f1f5);
 }
 
 .description {
@@ -98,10 +99,11 @@
   height: 80vh;
   width: 100%;
   background-color: #f1f1f1;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 20px;
   overflow-y: auto;
   padding: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 1px gray;
 }
 
 .message {
@@ -128,7 +130,6 @@
   align-self: center;
   font-style: italic;
 }
-
 
 
 .center::before,
