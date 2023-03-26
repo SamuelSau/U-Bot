@@ -19,6 +19,7 @@ load_dotenv()
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
 ELEVEN_LAB_KEY = os.environ.get("ELEVEN_LAB_KEY")
+DEFAULT_INITIAL_PROMPT = "Your name is Ron and you are a senior software engineer that has worked at Google for over 20 years. You are interviewing a candidate by conducting a behavioral software engineer interview for a software engineer role. You will be asking and clarifying easy questions. Try to be as witty and humourous as possible. Limit your response to 50 words. "
 
 def speech_to_text(audio):
     with open('speech.wav', 'wb') as f:
@@ -44,10 +45,15 @@ def get_initial_prompt():
 @api_view(['POST'])
 def set_initial_prompt(request):
     custom_prompt = request.data.get('custom_prompt')
+    request.session.flush()
     if custom_prompt:
-        request.session['initial_prompt'] = custom_prompt
+        combined_prompt = f"{DEFAULT_INITIAL_PROMPT}{custom_prompt}"
+        request.session['initial_prompt'] = combined_prompt
+        print ("Initial prompt set to: ", combined_prompt)
+        
         return JsonResponse({"message": "Initial prompt updated successfully."}, status=status.HTTP_200_OK)
     else:
+        request.session['initial_prompt'] = DEFAULT_INITIAL_PROMPT
         return JsonResponse({"error": "No custom prompt provided."}, status=status.HTTP_400_BAD_REQUEST)
 
 # When an audio file is sent to the server, this function is called and returns the chatgpt response.
@@ -63,15 +69,14 @@ def get_chatgpt_response(request):
         user_input = speech_to_text(audio_file)
 
         if not request.session.get('messages'):
-            initial_prompt = request.session.get('initial_prompt', "Default initial prompt")
-            combined_prompt = f"Your name is Ron and you are a senior software engineer that has worked at Google for over 20 years. You are interviewing a candidate by conducting a behavioral software engineer interview for a software engineer role. You will be asking and clarifying easy questions. Try to be as witty and humourous as possible.{initial_prompt}"
-            messages = [{'content': combined_prompt, 'role': Message.SYSTEM}]
+            initial_prompt = request.session.get('initial_prompt', DEFAULT_INITIAL_PROMPT)
+            messages = [{'content': initial_prompt, 'role': Message.SYSTEM}]
             request.session['messages'] = messages
             
         else:
             messages = request.session['messages']
         # Format the conversation history for ChatGPTsystem
-        print("prompt:", combined_prompt)
+        print("prompt:", initial_prompt)
         user_message = {'content': user_input, 'role': Message.USER}
         messages.append(user_message)
     

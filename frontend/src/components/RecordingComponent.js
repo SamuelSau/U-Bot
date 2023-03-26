@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef} from 'react';
 import { ReactMic } from 'react-mic';
 import styles from './RecordingComponent.module.css';
+import { Container, Message, Segment } from 'semantic-ui-react';
 
 const RecordingComponent = () => {
 	const [recording, setRecording] = useState(false);
 	const [audioBlob, setAudioBlob] = useState(null);
-  const [userInput, setUserInput] = useState('');
-  const [chatGPTResponse, setChatGPTResponse] = useState('');
+  const [messages, setMessages] = useState([]); // Store the messages in an array
   const [base64Audio, setBase64Audio] = useState(null);
 
 	const startRecording = () => {
@@ -53,9 +53,9 @@ const RecordingComponent = () => {
 			);
       const data = await response.json();
 			console.log('Response:', data);
-      setUserInput(data.user_input);
-      setChatGPTResponse(data.chatgpt_response);
+      setMessages(data.messages); // Store the messages in an array
       setBase64Audio(data.audio_base64); // Store the Base64 audio data
+      console.log(data.messages);
 		} catch (error) {
 			console.error('Error:', error);
 		}
@@ -84,6 +84,24 @@ const RecordingComponent = () => {
 
 	return (
 		<div className={styles.container}>
+      <div className="App">
+      <Container>
+        {messages && messages.map((message, index) => (
+          <Segment
+            key={index}
+            className={`message-container ${
+              message.role === 'user' ? 'user-message' : 'assistant-message'
+            }`}
+          >
+            <Message
+              compact
+              color={message.role === 'user' ? 'blue' : 'grey'}
+              content={message.content}
+            />
+          </Segment>
+        ))}
+      </Container>
+    </div>
 			<h1 className={styles.heading}>Recording Component</h1>
 			<ReactMic
 				record={recording}

@@ -1,11 +1,4 @@
 .env
-node_modules
-# Ignore .next cache directory
-frontend/.next/cache/
-
-# Ignore speech.wav
+frontend/node_modules
+frontend/.next/
 gitreadybackend/speech.wav
-
-# Ignore Next.js build output
-frontend/.next/server/
-frontend/.next/static/
