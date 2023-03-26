@@ -16,8 +16,9 @@ import json
 import warnings
 from urllib3.exceptions import InsecureRequestWarning
 from dotenv import load_dotenv
+from django.views.decorators.csrf import csrf_exempt
 load_dotenv()
-
+ELEVEN_LABS_URL = "EXAVITQu4vr4xnSDxMaL"
 openai.api_key = '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'
 ELEVEN_LAB_KEY = os.environ.get("ELEVEN_LAB_KEY")
 DEFAULT_INITIAL_PROMPT = "Your name is Ron and you are a senior software engineer that has worked at Google for over 20 years. You are interviewing a candidate by conducting a behavioral software engineer interview for a software engineer role. You will be asking and clarifying easy questions. Try to be as witty and humourous as possible. Limit your response to 50 words. "
@@ -97,7 +98,8 @@ def get_chatgpt_response(request):
         messages.append(model_to_dict(assistant_message, exclude=["id"]))
 
        # Synthesize ChatGPT response as audio using Eleven Labs API
-        eleven_labs_url = "https://api.elevenlabs.io/v1/text-to-speech/EXAVITQu4vr4xnSDxMaL"
+        first_string = "https://api.elevenlabs.io/v1/text-to-speech/"
+        eleven_labs_url = (first_string+ELEVEN_LABS_URL)
         api_key = os.environ.get("ELEVEN_LAB_KEY")
         headers = {"xi-api-key": api_key}
         data = {"text": chatgpt_response, "voice_settings": {
@@ -135,3 +137,14 @@ def end_session(request):
     # Clear all messages from the database
     Message.objects.all().delete()
     return JsonResponse({"success": True})
+
+@csrf_exempt
+@api_view(['POST'])
+def update_variable(request):
+    global ELEVEN_LABS_URL
+    new_url = request.data.get('new_url')
+    if new_url:
+        ELEVEN_LABS_URL = new_url
+        return JsonResponse({"message": "Eleven Labs URL updated successfully."}, status=status.HTTP_200_OK)
+    else:
+        return JsonResponse({"error": "No new URL provided."}, status=status.HTTP_400_BAD_REQUEST)
