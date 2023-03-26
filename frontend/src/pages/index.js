@@ -16,6 +16,7 @@ import Link from 'next/link';
 import navbarStyles from '../styles/Navbar.module.css';
 import dynamic from 'next/dynamic';
 import { Grid } from 'semantic-ui-react';
+import axios from 'axios';
 
 //whenever text changes, log it
 
@@ -36,9 +37,25 @@ export default function Home() {
 		setText(event.target.value);
 	};
 
-	const handleModalClose = () => {
+	const handleModalClose = async() => {
 		console.log('Modal closed');
-		// SEND PERSONALITY DESCRIPTION TO BACKEND
+		try {
+			console.log('Submitting text:', text);
+			const response = await axios.post('http://127.0.0.1:8000/api/set_initial_prompt/', {
+			  custom_prompt: text,
+			}, {
+			  headers: {
+				'Content-Type': 'application/json',
+			  },
+			});
+		
+			console.log('Response:', response.data);
+			// Do something with the response, e.g., close the modal or show a success message
+			window.location.reload();
+		  } catch (error) {
+			console.error('Error submitting text:', error);
+			// Handle error, e.g., show an error message
+		  }
 	};
 	const [selectedOption, setSelectedOption] = useState('');
 
@@ -85,11 +102,8 @@ export default function Home() {
 
 	const handleMessagesUpdate = (newMessages) => {
 		setChatMessages(newMessages); // Update the chat box with new messages
+		
 	};
-
-	useEffect(() => {
-		console.log(text);
-	}, [text]);
 
 	return (
 		<>
