@@ -3,8 +3,10 @@ import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import { useState, useEffect } from 'react';
-import { Menu, Container, Dropdown } from 'semantic-ui-react';
+import { Modal, Menu, Container, Dropdown, Button, Input, TextArea } from 'semantic-ui-react';
 import Link from 'next/link';
+import navbarStyles from '../styles/Navbar.module.css';
+
 
 
 import dynamic from 'next/dynamic';
@@ -20,18 +22,17 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <Menu fixed="top" inverted>
-  <Container>
-  <Menu.Item as="a" header href="https://nextjs.org">
-  <h1 className={styles.title}>Welcome to U-BOT!</h1>
-</Menu.Item>
-
-    <Menu.Item>
-      <p>Please select your voice</p>
+      <Menu fixed="top" inverted>
+  <Container className={navbarStyles.menuContainer}>
+    <Menu.Item as="a" header href="https://nextjs.org" className={navbarStyles.menuItem}>
+      <h1 className={styles.title}>Welcome to U-BOT!</h1>
     </Menu.Item>
-    <Menu.Item>
+    {/* <Menu.Item className={navbarStyles.menuItem}>
+      <p>Please select your voice</p>
+    </Menu.Item> */}
+    <Menu.Item className={navbarStyles.menuItem}>
       <Dropdown
-        placeholder="Select a name"
+        placeholder="Select a voice"
         selection
         options={[
           { key: 'bella', value: 'Bella', text: 'Bella' },
@@ -39,8 +40,18 @@ export default function Home() {
         ]}
       />
     </Menu.Item>
+    <Modal
+      closeIcon
+      trigger={<Button secondary className={navbarStyles.menuItem}>Edit Personality</Button>}
+    >
+      <Modal.Header>Personality Description</Modal.Header>
+      <Modal.Content>
+        <TextArea placeholder="Enter your text" rows={10} style={{ width: '100%' }} />
+      </Modal.Content>
+    </Modal>
   </Container>
 </Menu>
+
 
         <h1>Voice Recorder</h1>
         <DynamicVoiceRecorder />
