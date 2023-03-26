@@ -3,7 +3,7 @@ import { ReactMic } from 'react-mic';
 import styles from './RecordingComponent.module.css';
 import { Container, Message, Segment } from 'semantic-ui-react';
 
-const RecordingComponent = () => {
+const RecordingComponent = ({ onMessagesUpdate }) => {
 	const [recording, setRecording] = useState(false);
 	const [audioBlob, setAudioBlob] = useState(null);
   const [messages, setMessages] = useState([]); // Store the messages in an array
@@ -55,6 +55,10 @@ const RecordingComponent = () => {
 			console.log('Response:', data);
       setMessages(data.messages); // Store the messages in an array
       setBase64Audio(data.audio_base64); // Store the Base64 audio data
+	   // Call the onMessagesUpdate prop with the new messages
+	   if (onMessagesUpdate) {
+		onMessagesUpdate(data.messages);
+	  }
       console.log(data.messages);
 		} catch (error) {
 			console.error('Error:', error);

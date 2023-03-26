@@ -7,6 +7,8 @@ import { Modal, Menu, Container, Dropdown, Button, Input, TextArea } from 'seman
 import Link from 'next/link';
 import navbarStyles from '../styles/Navbar.module.css';
 import dynamic from 'next/dynamic';
+import { Grid } from 'semantic-ui-react';
+
 
 
 
@@ -14,7 +16,14 @@ import dynamic from 'next/dynamic';
 //whenever text changes, log it
 
 //import VoiceRecorder from '@/components/VoiceRecorder'
-const DynamicVoiceRecorder = dynamic(() => import('@/components/RecordingComponent'), { ssr: false });
+const DynamicVoiceRecorder = dynamic(
+  () => import('@/components/RecordingComponent'),
+  {
+    ssr: false,
+    loading: () => <p>Loading...</p>,
+  }
+);
+
 export default function Home() {
 const [text, setText] = useState("");
 const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -26,6 +35,15 @@ const handleTextChange = (event) => {
 const handleModalClose = () => {
   console.log('Modal closed');
   // SEND PERSONALITY DESCRIPTION TO BACKEND
+};
+
+// EXAMPLE TEXT
+
+// EXAMPLE TEXT
+const [chatMessages, setChatMessages] = useState([]);
+
+const handleMessagesUpdate = (newMessages) => {
+  setChatMessages(newMessages);
 };
 
 useEffect(() => {
@@ -74,8 +92,42 @@ useEffect(() => {
 </Menu>
 
 
-        <h1>Voice Recorder</h1>
-        <DynamicVoiceRecorder />
+<main className={styles.main}>
+  {/* ... */}
+  <Grid stackable columns={2} divided>
+    <Grid.Column>
+      <h1>Voice Recorder</h1>
+      <DynamicVoiceRecorder onMessagesUpdate={handleMessagesUpdate}/>
+    </Grid.Column>
+    <Grid.Column>
+      <h1>Text-Chat Box</h1>
+      <div className={styles.chatBox}>
+  {chatMessages.map((message, index) => {
+    if (index === 0) {
+      return null;
+    }
+
+    return (
+      <div
+        key={index}
+        className={`${styles.message} ${styles[message.role]}`}
+      >
+        {message.content}
+      </div>
+    );
+  })}
+</div>
+
+
+      <Input
+        fluid
+        placeholder="Type your message..."
+        action={{ icon: 'send', onClick: () => {/* Handle sending message */} }}
+      />
+    </Grid.Column>
+  </Grid>
+</main>
+
         
       </main>
     </>
