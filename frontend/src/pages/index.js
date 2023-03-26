@@ -46,9 +46,8 @@ export default function Home() {
 	const [chatMessages, setChatMessages] = useState([]);
 
 	const handleMessagesUpdate = (newMessages) => {
-    setChatMessages((prevState) => {
-      return [...newMessages];
-    });
+    console.log("THE NEW MESSAGES", newMessages)
+    setChatMessages(newMessages); // Update the chat box with new messages
   };
 
 	useEffect(() => {
