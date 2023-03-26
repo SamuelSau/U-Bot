@@ -40,12 +40,32 @@ export default function Home() {
 		console.log('Modal closed');
 		// SEND PERSONALITY DESCRIPTION TO BACKEND
 	};
+	const [selectedOption, setSelectedOption] = useState('');
 
+	const updateElevenLabsURL = async (option) => {
+		setSelectedOption(option);
+	
+		const response = await fetch('http://127.0.0.1:8000/api/update-variable/', {
+		  method: 'POST',
+		  body: JSON.stringify({ new_url: option }),
+		  headers: {
+			'Content-Type': 'application/json'
+		  }
+		});
+		console.log("responseeeeeee")
+		console.log(response)
+		if (!response.ok) {
+			console.log("ERROR OCCURED WHEN TRYING TO CHANGE VOICE ON FRONT END")
+		  // handle error
+		}
+	  };
 
 	// EXAMPLE TEXT
 	const [chatMessages, setChatMessages] = useState([]);
 
 	const handleMessagesUpdate = (newMessages) => {
+		console.log("NEW MESSAGES: ")
+		console.log(newMessages)
 		setChatMessages(newMessages);
 	};
 
@@ -84,11 +104,16 @@ export default function Home() {
     </Menu.Item> */}
 						<Menu.Item className={navbarStyles.menuItem}>
 							<Dropdown
+								onChange={(e, { value }) => updateElevenLabsURL(value)}
 								placeholder='Select a voice'
 								selection
 								options={[
-									{ key: 'bella', value: 'Bella', text: 'Bella' },
-									{ key: 'arnold', value: 'Arnold', text: 'Arnold' },
+									{ key: 'EXAVITQu4vr4xnSDxMaL', value: 'EXAVITQu4vr4xnSDxMaL', text: 'Bella' },
+									{ key: 'VR6AewLTigWG4xSOukaG', value: 'VR6AewLTigWG4xSOukaG', text: 'Arnold' },
+									{ key: 'TxGEqnHWrfWFTfGW9XjX', value: 'TxGEqnHWrfWFTfGW9XjX', text: 'Josh' },
+									{ key: 'MF3mGyEYCl7XYWbV9V6O', value: 'MF3mGyEYCl7XYWbV9V6O', text: 'Elli' },
+									{ key: 'ErXwobaYiN019PkySvjV', value: 'ErXwobaYiN019PkySvjV', text: 'Antoni' },
+									{ key: 'AZnzlk1XvdvUeBnXmlld', value: 'AZnzlk1XvdvUeBnXmlld', text: 'Domi' },
 								]}
 								style={{
 									display: 'flex',
