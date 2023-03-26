@@ -17,7 +17,7 @@ from urllib3.exceptions import InsecureRequestWarning
 from dotenv import load_dotenv
 load_dotenv()
 
-openai.api_key = os.getenv('OPENAI_API_KEY')
+openai.api_key = "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"
 ELEVEN_LAB_KEY = os.environ.get("ELEVEN_LAB_KEY")
 DEFAULT_INITIAL_PROMPT = "Your name is Ron and you are a senior software engineer that has worked at Google for over 20 years. You are interviewing a candidate by conducting a behavioral software engineer interview for a software engineer role. You will be asking and clarifying easy questions. Try to be as witty and humourous as possible. Limit your response to 50 words. "
 

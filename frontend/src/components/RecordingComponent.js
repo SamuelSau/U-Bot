@@ -40,31 +40,31 @@ const RecordingComponent = ({ onMessagesUpdate }) => {
 		event.preventDefault();
 		const formData = new FormData();
 		formData.append(
-			'audio_file',
-			new File([audioBlob], 'audio.wav', { type: 'audio/wav' })
+		  'audio_file',
+		  new File([audioBlob], 'audio.wav', { type: 'audio/wav' })
 		);
 		try {
-			const response = await fetch(
-				'http://127.0.0.1:8000/api/get_chatgpt_response/',
-				{
-					method: 'POST',
-					body: formData,
-				}
-			);
-      const data = await response.json();
-			console.log('Response:', data);
-      setMessages(data.messages); // Store the messages in an array
-      setBase64Audio(data.audio_base64); // Store the Base64 audio data
-	   // Call the onMessagesUpdate prop with the new messages
-	   if (onMessagesUpdate) {
-		onMessagesUpdate(data.messages);
-	  }
-      console.log(data.messages);
+		  const response = await fetch(
+			'http://127.0.0.1:8000/api/get_chatgpt_response/',
+			{
+			  method: 'POST',
+			  body: formData,
+			}
+		  );
+		  const data = await response.json();
+		  console.log('Response:', data);
+		  setMessages((prevMessages) => [...prevMessages, ...data.messages]); // Append new messages to the existing array
+		  setBase64Audio(data.audio_base64); // Store the Base64 audio data
+		  // Call the onMessagesUpdate prop with the new messages
+		  if (onMessagesUpdate) {
+			onMessagesUpdate([...messages, ...data.messages]);
+		  }
+		  console.log(data.messages);
 		} catch (error) {
-			console.error('Error:', error);
+		  console.error('Error:', error);
 		}
-	};
-
+	  };
+	  
   const endSession = async () => {
     try {
       const response = await fetch('http://127.0.0.1:8000/api/end_session/', {
@@ -89,22 +89,8 @@ const RecordingComponent = ({ onMessagesUpdate }) => {
 	return (
 		<div className={styles.container}>
       <div className="App">
-      <Container>
-        {messages && messages.map((message, index) => (
-          <Segment
-            key={index}
-            className={`message-container ${
-              message.role === 'user' ? 'user-message' : 'assistant-message'
-            }`}
-          >
-            <Message
-              compact
-              color={message.role === 'user' ? 'blue' : 'grey'}
-              content={message.content}
-            />
-          </Segment>
-        ))}
-      </Container>
+		<Container>
+			</Container>
     </div>
 			<h1 className={styles.heading}>Recording Component</h1>
 			<ReactMic
