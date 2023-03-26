@@ -1,4 +1,4 @@
-# GitReady 
+# U-Bot
 This is a full stack web based application that allows you to practice with a AI-powered voice assistant that conducts a software engineering technical interview using natural language. The voice assistant primarily uses OpenAI's ChatGPT API, OpenAI's Whisper API, and ElevenLabs API to power the voice assistance feature. The web application is hosted on the cloud provider Google Cloud, with PostgreSQL database, and NextJS as the frontend, and Django as the backend framework.
 
 ## Getting Started
