@@ -23,7 +23,7 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
       <Menu fixed="top" inverted>
-  <Container className={navbarStyles.menuContainer}>
+  <Container className={navbarStyles.menuContainer} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
     <Menu.Item as="a" header href="https://nextjs.org" className={navbarStyles.menuItem}>
       <h1 className={styles.title}>Welcome to U-BOT!</h1>
     </Menu.Item>
@@ -37,12 +37,13 @@ export default function Home() {
         options={[
           { key: 'bella', value: 'Bella', text: 'Bella' },
           { key: 'arnold', value: 'Arnold', text: 'Arnold' },
-        ]}
+        ]} 
+        style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
       />
     </Menu.Item>
     <Modal
       closeIcon
-      trigger={<Button secondary className={navbarStyles.menuItem}>Edit Personality</Button>}
+      trigger={<Button secondary className={navbarStyles.menuItem} style={{ maxWidth: '300px', width: '100%', fontSize: '24px'  }}>Edit Personality</Button>}
     >
       <Modal.Header>Personality Description</Modal.Header>
       <Modal.Content>
