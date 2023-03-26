@@ -39,6 +39,15 @@ def get_initial_prompt():
     with open('personality.txt', 'r') as file:
         return file.read()
 
+@api_view(['POST'])
+def set_initial_prompt(request):
+    custom_prompt = request.data.get('custom_prompt')
+    if custom_prompt:
+        request.session['initial_prompt'] = custom_prompt
+        return JsonResponse({"message": "Initial prompt updated successfully."}, status=status.HTTP_200_OK)
+    else:
+        return JsonResponse({"error": "No custom prompt provided."}, status=status.HTTP_400_BAD_REQUEST)
+
 # When an audio file is sent to the server, this function is called and returns the chatgpt response.
 @api_view(['POST']) 
 def get_chatgpt_response(request): 
@@ -52,12 +61,15 @@ def get_chatgpt_response(request):
         user_input = speech_to_text(audio_file)
 
         if not request.session.get('messages'):
-            initial_prompt = "You are interviewing a candidate by conducting a behavioral software engineer interview for a software engineer role. Ask them easy questions"
-            messages = [{'content': initial_prompt, 'role': Message.SYSTEM}]
+            initial_prompt = request.session.get('initial_prompt', "Default initial prompt")
+            combined_prompt = f"Your name is Ron and you are a senior software engineer that has worked at Google for over 20 years. You are interviewing a candidate by conducting a behavioral software engineer interview for a software engineer role. You will be asking and clarifying easy questions. Try to be as witty and humourous as possible.{initial_prompt}"
+            messages = [{'content': combined_prompt, 'role': Message.SYSTEM}]
             request.session['messages'] = messages
+            
         else:
             messages = request.session['messages']
         # Format the conversation history for ChatGPTsystem
+        print("prompt:", combined_prompt)
         user_message = {'content': user_input, 'role': Message.USER}
         messages.append(user_message)
     
@@ -85,6 +97,7 @@ def get_chatgpt_response(request):
         }}
 
         warnings.simplefilter("ignore", InsecureRequestWarning)
+        print("Sending request to Eleven Labs...")
         tts_response = requests.post(eleven_labs_url, headers=headers, json=data, verify=False)
         #print("Eleven Labs response:", tts_response.text)
 
@@ -92,6 +105,7 @@ def get_chatgpt_response(request):
             raise Exception(f"Error interacting with Eleven Labs API: {tts_response.text}")
 
         # Convert audio data to base64
+        print("Converting audio to base64...")
         audio_base64 = base64.b64encode(tts_response.content).decode("utf-8")
 
         #Create a custom response with JSON data and the base64-encoded audio
