@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.forms import model_to_dict
 from django.shortcuts import render
 import os
 import openai
@@ -72,15 +73,17 @@ def get_chatgpt_response(request):
 
     try:
         user_input = speech_to_text(audio_file)
+        messages = [model_to_dict(message, exclude=["id"]) for message in Message.objects.all()]
 
         initial_prompt = Message.objects.filter(role=Message.SYSTEM).first()
         if not initial_prompt:
             initial_prompt = create_message(DEFAULT_INITIAL_PROMPT, Message.SYSTEM)
+            messages.append(model_to_dict(initial_prompt, exclude=["id"]))
 
-        messages = [message.to_json() for message in Message.objects.all()]
 
-        user_message = {'content': user_input, 'role': 'user'}
-        messages.append(user_message)
+        user_message = create_message(user_input, Message.USER)
+        messages.append(model_to_dict(user_message, exclude=["id"]))
+        print(messages)
     
         print("Getting ChatGPT response...")
         response = openai.ChatCompletion.create(
@@ -90,8 +93,8 @@ def get_chatgpt_response(request):
         )
         chatgpt_response = response.choices[0].message.content
         
-        assistant_message = {'content': chatgpt_response, 'role': 'assistant'}
-        messages.append(assistant_message)
+        assistant_message = create_message(chatgpt_response, Message.ASSISTANT)
+        messages.append(model_to_dict(assistant_message, exclude=["id"]))
 
        # Synthesize ChatGPT response as audio using Eleven Labs API
         eleven_labs_url = "https://api.elevenlabs.io/v1/text-to-speech/EXAVITQu4vr4xnSDxMaL"
