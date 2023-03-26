@@ -41,14 +41,32 @@ export default function Home() {
 		// SEND PERSONALITY DESCRIPTION TO BACKEND
 	};
 
+	const endSession = async () => {
+		try {
+			const response = await fetch('http://127.0.0.1:8000/api/end_session/', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			});
+
+			if (response.ok) {
+				// The session has ended successfully, refresh the page
+				window.location.reload();
+			} else {
+				console.error('Error ending session:', response.statusText);
+			}
+		} catch (error) {
+			console.error('Error ending session:', error);
+		}
+	};
 
 	// EXAMPLE TEXT
 	const [chatMessages, setChatMessages] = useState([]);
 
 	const handleMessagesUpdate = (newMessages) => {
-    console.log("THE NEW MESSAGES", newMessages)
-    setChatMessages(newMessages); // Update the chat box with new messages
-  };
+		setChatMessages(newMessages); // Update the chat box with new messages
+	};
 
 	useEffect(() => {
 		console.log(text);
@@ -136,9 +154,8 @@ export default function Home() {
 							<DynamicVoiceRecorder onMessagesUpdate={handleMessagesUpdate} />
 						</Grid.Column>
 						<Grid.Column>
-							<h1>Text-Chat Box</h1>
+							<h1>Chat</h1>
 							<div className={styles.chatBox}>
-								
 								{chatMessages.map((message, index) => {
 									if (index === 0) {
 										return null;
@@ -153,18 +170,9 @@ export default function Home() {
 										</div>
 									);
 								})}
+							
 							</div>
-
-							<Input
-								fluid
-								placeholder='Type your message...'
-								action={{
-									icon: 'send',
-									onClick: () => {
-										/* Handle sending message */
-									},
-								}}
-							/>
+							<button className={styles.clearButton} onClick={endSession}>Clear Conversation</button>
 						</Grid.Column>
 					</Grid>
 				</main>
