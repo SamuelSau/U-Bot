@@ -1,3 +1,4 @@
+
 # U-Bot 
 ![U-BOT](/ubot_transparent.png)
 
@@ -7,17 +8,13 @@ This is a web based application that allows you to practice with a AI-powered vo
 
 
 ## Getting Started
-To use the voice assistant, simply navigate to the web application's URL in your browser. Once the page has loaded, press the spacebar to activate the voice assistant. Ensure that your microphone and speakers are unmuted. The AI will speak back to you when you finish.
+To use the voice assistant, simply navigate to the web application's URL in your browser. Once the page has loaded, you can press the start recording button to speak with the AI. Ensure that your microphone and speakers are unmuted. The AI will speak back to you when you finish when you stop recording and submit it.
 
 ## Start the web application:
 Navigate to <insertUrl> in your web browser to access the web application.
 
-### Files and Directories
-voice_assistant.py: This is the main file that instantiates the microphone, ChatGPT API, Whisper API, and ElevanLabs API to work.
-personality.txt: This file defines the behavior of the  voice assistant used to conduct technical interviews.
-
 ## Credits
-This web application was developed by *Samuel Sau* *Cory Zastoupil* *Janpaul Paredero* and *Pedro Mir Reynoso* as part of a project for Hackabull 2023 at the University of South Florida. 
+This web application was developed by *Samuel Sau*, *Cory Zastoupil*, *Janpaul Paredero*, and *Pedro Mir Reynoso* as part of a project for Hackabull 2023 at the University of South Florida. 
 
 ## License
 This project is licensed under the MIT License.
