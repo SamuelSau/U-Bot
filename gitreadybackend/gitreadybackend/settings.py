@@ -84,10 +84,10 @@ WSGI_APPLICATION = 'gitreadybackend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
+        'NAME': 'gitreadyDatabase',
         'USER': 'postgres',
-        'PASSWORD': 'coolbeans11',
-        'HOST': 'localhost',
+        'PASSWORD': 'lobsterpaste',
+        'HOST': '34.67.228.90',
         'PORT': '5432',
     }
     # 'default': {

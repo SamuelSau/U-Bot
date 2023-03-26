@@ -20,3 +20,11 @@ class Message(models.Model):
     
     class Meta:
         ordering = ['timestamp']
+    
+    def to_json(self):
+        return {
+            'role': self.role,
+            'content': self.content,
+        }
+    
+    
