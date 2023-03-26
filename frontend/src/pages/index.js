@@ -6,13 +6,26 @@ import { useState, useEffect } from 'react';
 import { Modal, Menu, Container, Dropdown, Button, Input, TextArea } from 'semantic-ui-react';
 import Link from 'next/link';
 import navbarStyles from '../styles/Navbar.module.css';
-
-
-
 import dynamic from 'next/dynamic';
+
+
+
+
+//whenever text changes, log it
+
 //import VoiceRecorder from '@/components/VoiceRecorder'
 const DynamicVoiceRecorder = dynamic(() => import('@/components/RecordingComponent'), { ssr: false });
 export default function Home() {
+const [text, setText] = useState("");
+
+const handleTextChange = (event) => {
+  setText(event.target.value);
+};
+
+useEffect(() => {
+  console.log(text);
+}, [text]);
+
   return (
     <>
       <Head>;
@@ -46,7 +59,8 @@ export default function Home() {
     >
       <Modal.Header>Personality Description</Modal.Header>
       <Modal.Content>
-        <TextArea placeholder="Enter your text" rows={10} style={{ width: '100%' }} />
+        <TextArea placeholder="Enter your text" rows={10} style={{ width: '100%' }}  value={text}
+          onChange={handleTextChange}/>
       </Modal.Content>
     </Modal>
   </Container>
