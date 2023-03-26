@@ -58,7 +58,7 @@ const RecordingComponent = ({ onMessagesUpdate }) => {
 		  setBase64Audio(data.audio_base64); // Store the Base64 audio data
 		  // Call the onMessagesUpdate prop with the new messages
 		  if (onMessagesUpdate) {
-			onMessagesUpdate([...messages, ...data.messages]);
+			onMessagesUpdate([...data.messages]);
 		  }
 		  console.log(data.messages);
 		} catch (error) {
