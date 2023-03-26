@@ -21,7 +21,7 @@ load_dotenv()
 ELEVEN_LABS_URL = "EXAVITQu4vr4xnSDxMaL"
 openai.api_key = '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'
 ELEVEN_LAB_KEY = os.environ.get("ELEVEN_LAB_KEY")
-DEFAULT_INITIAL_PROMPT = "Your name is Ron and you are a senior software engineer that has worked at Google for over 20 years. You are interviewing a candidate by conducting a behavioral software engineer interview for a software engineer role. You will be asking and clarifying easy questions. Try to be as witty and humourous as possible. Limit your response to 50 words. "
+DEFAULT_INITIAL_PROMPT = "Your name is Ron and you are a senior software engineer that has worked at Google for over 20 years. You are interviewing a candidate by conducting a behavioral software engineer interview for a software engineer role. You will be asking and clarifying easy questions. Limit your response to 50 words. "
 
 def speech_to_text(audio):
     with open('speech.wav', 'wb') as f:
