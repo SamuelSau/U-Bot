@@ -1,24 +1,18 @@
 import Head from 'next/head';
-import Image from 'next/image';
-import { Inter } from 'next/font/google';
 import styles from '@/styles/Home.module.css';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
 	Modal,
 	Menu,
 	Container,
 	Dropdown,
 	Button,
-	Input,
 	TextArea,
 } from 'semantic-ui-react';
-import Link from 'next/link';
 import navbarStyles from '../styles/Navbar.module.css';
 import dynamic from 'next/dynamic';
 import { Grid } from 'semantic-ui-react';
 import axios from 'axios';
-
-//whenever text changes, log it
 
 //import VoiceRecorder from '@/components/VoiceRecorder'
 const DynamicVoiceRecorder = dynamic(
@@ -70,7 +64,6 @@ export default function Home() {
 			'Content-Type': 'application/json'
 		  }
 		});
-		console.log("responseeeeeee")
 		console.log(response)
 		if (!response.ok) {
 			console.log("ERROR OCCURED WHEN TRYING TO CHANGE VOICE ON FRONT END")

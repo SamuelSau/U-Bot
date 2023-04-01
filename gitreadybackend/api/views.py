@@ -10,9 +10,8 @@ from rest_framework import status
 import traceback
 from .models import Message
 import requests
-from django.http import FileResponse, JsonResponse
+from django.http import JsonResponse
 import base64
-import json
 import warnings
 from urllib3.exceptions import InsecureRequestWarning
 from dotenv import load_dotenv
