@@ -1,2 +1,2 @@
-web: npm run dev
+web: cd frontend && yarn dev
 api: cd gitreadybackend && python manage.py runserver
