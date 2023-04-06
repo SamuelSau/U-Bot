@@ -29,7 +29,9 @@ SECRET_KEY = 'django-insecure-vfbzrkj1omdutmal*0blam6cp#_*+rexp9=h3)b_q@(rzq-644
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'artful-doodad-381616.uk.r.appspot.com'
+    ]
 
 
 # Application definition
@@ -90,14 +92,6 @@ DATABASES = {
         'HOST': '34.67.228.90',
         'PORT': '5432',
     }
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': 'gitready',
-    #     'USER': 'postgres',
-    #     'PASSWORD': 'lobsterpaste',
-    #     'HOST': 'gitready.cxz7x2iimqnj.us-east-2.rds.amazonaws.com',
-    #     'PORT': '5432',
-    # }
 }
 
 
