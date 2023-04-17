@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AudioRecorder, useAudioRecorder } from 'react-audio-voice-recorder';
 import styles from './RecordingComponent.module.css';
 
 const RecordingComponent = ({ onMessagesUpdate }) => {
   const recorderControls = useAudioRecorder();
   const audioRef = React.useRef();
+
+  // Add useState for messages
+  const [messages, setMessages] = useState([]);
 
   const addAudioElement = (blob) => {
     const url = URL.createObjectURL(blob);
