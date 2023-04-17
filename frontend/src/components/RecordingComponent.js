@@ -36,7 +36,6 @@ const RecordingComponent = ({ onMessagesUpdate }) => {
       if (onMessagesUpdate) {
         onMessagesUpdate(data.messages);
       }
-      console.log(data.messages);
     } catch (error) {
       console.error('Error:', error);
     }
