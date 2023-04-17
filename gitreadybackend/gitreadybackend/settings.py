@@ -30,7 +30,8 @@ SECRET_KEY = 'django-insecure-vfbzrkj1omdutmal*0blam6cp#_*+rexp9=h3)b_q@(rzq-644
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'artful-doodad-381616.uk.r.appspot.com'
+    'artful-doodad-381616.uk.r.appspot.com',
+    '127.0.0.1'
     ]
 
 
