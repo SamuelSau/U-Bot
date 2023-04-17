@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev frontend",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -12,9 +12,9 @@
     "audio-recorder-polyfill": "^0.4.1",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
-    "next": "10.0.0",
-    "react": "16.12.0",
-    "react-dom": "16.12.0",
+    "next": "^13.3.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-mic": "^12.4.6",
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^2.1.4"
