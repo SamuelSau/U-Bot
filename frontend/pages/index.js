@@ -35,7 +35,7 @@ export default function Home() {
 		console.log('Modal closed');
 		try {
 			console.log('Submitting text:', text);
-			const response = await axios.post('http://127.0.0.1:8000/api/set_initial_prompt/', {
+			const response = await axios.post('https://ubotbackend.herokuapp.com/api/set_initial_prompt/', {
 			  custom_prompt: text,
 			}, {
 			  headers: {
@@ -57,7 +57,7 @@ export default function Home() {
 	const updateElevenLabsURL = async (option) => {
 		setSelectedOption(option);
 	
-		const response = await fetch('http://127.0.0.1:8000/api/update-variable/', {
+		const response = await fetch('https://ubotbackend.herokuapp.com/api/update-variable/', {
 		  method: 'POST',
 		  body: JSON.stringify({ new_url: option }),
 		  headers: {
@@ -72,7 +72,7 @@ export default function Home() {
 	  };
 	const endSession = async () => {
 		try {
-			const response = await fetch('http://127.0.0.1:8000/api/end_session/', {
+			const response = await fetch('https://ubotbackend.herokuapp.com/api/end_session/', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
