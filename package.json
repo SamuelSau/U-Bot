@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -c ./frontend/next.config.js",
-    "build": "next build ./frontend",
-    "start": "next start ./frontend"
+    "dev": "cd frontend && next dev",
+    "build": "cd frontend && next build",
+    "start": "cd frontend && next start"
   },
   "dependencies": {
     "audio-recorder-polyfill": "^0.4.1",
