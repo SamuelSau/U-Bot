@@ -36,7 +36,7 @@ export default function Home() {
 		try {
 			console.log('Submitting text:', text);
 			const response = await axios.post(
-				'https://ubotbackend.herokuapp.com/api/set_initial_prompt/',
+				`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/set_initial_prompt/`,
 				{
 					custom_prompt: text,
 				},
@@ -61,7 +61,7 @@ export default function Home() {
 		setSelectedOption(option);
 
 		const response = await fetch(
-			'https://ubotbackend.herokuapp.com/api/update-variable/',
+			`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/update-variable/`,
 			{
 				method: 'POST',
 				body: JSON.stringify({ new_url: option }),
@@ -79,7 +79,7 @@ export default function Home() {
 	const endSession = async () => {
 		try {
 			const response = await fetch(
-				'https://ubotbackend.herokuapp.com/api/end_session/',
+				`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/end_session/`,
 				{
 					method: 'POST',
 					headers: {
