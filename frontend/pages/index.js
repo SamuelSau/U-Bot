@@ -31,53 +31,62 @@ export default function Home() {
 		setText(event.target.value);
 	};
 
-	const handleModalClose = async() => {
+	const handleModalClose = async () => {
 		console.log('Modal closed');
 		try {
 			console.log('Submitting text:', text);
-			const response = await axios.post('https://ubotbackend.herokuapp.com/api/set_initial_prompt/', {
-			  custom_prompt: text,
-			}, {
-			  headers: {
-				'Content-Type': 'application/json',
-			  },
-			});
-		
+			const response = await axios.post(
+				'https://ubotbackend.herokuapp.com/api/set_initial_prompt/',
+				{
+					custom_prompt: text,
+				},
+				{
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				}
+			);
+
 			console.log('Response:', response.data);
 			// Do something with the response, e.g., close the modal or show a success message
 			window.location.reload();
-		  } catch (error) {
+		} catch (error) {
 			console.error('Error submitting text:', error);
 			// Handle error, e.g., show an error message
-		  }
+		}
 	};
 	const [selectedOption, setSelectedOption] = useState('');
 
-
 	const updateElevenLabsURL = async (option) => {
 		setSelectedOption(option);
-	
-		const response = await fetch('https://ubotbackend.herokuapp.com/api/update-variable/', {
-		  method: 'POST',
-		  body: JSON.stringify({ new_url: option }),
-		  headers: {
-			'Content-Type': 'application/json'
-		  }
-		});
-		console.log(response)
-		if (!response.ok) {
-			console.log("ERROR OCCURED WHEN TRYING TO CHANGE VOICE ON FRONT END")
-		  // handle error
-		}
-	  };
-	const endSession = async () => {
-		try {
-			const response = await fetch('https://ubotbackend.herokuapp.com/api/end_session/', {
+
+		const response = await fetch(
+			'https://ubotbackend.herokuapp.com/api/update-variable/',
+			{
 				method: 'POST',
+				body: JSON.stringify({ new_url: option }),
 				headers: {
 					'Content-Type': 'application/json',
 				},
-			});
+			}
+		);
+		console.log(response);
+		if (!response.ok) {
+			console.log('ERROR OCCURED WHEN TRYING TO CHANGE VOICE ON FRONT END');
+			// handle error
+		}
+	};
+	const endSession = async () => {
+		try {
+			const response = await fetch(
+				'https://ubotbackend.herokuapp.com/api/end_session/',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				}
+			);
 
 			if (response.ok) {
 				// The session has ended successfully, refresh the page
@@ -95,7 +104,6 @@ export default function Home() {
 
 	const handleMessagesUpdate = (newMessages) => {
 		setChatMessages(newMessages); // Update the chat box with new messages
-		
 	};
 
 	return (
@@ -133,12 +141,36 @@ export default function Home() {
 								placeholder='Select a voice'
 								selection
 								options={[
-									{ key: 'EXAVITQu4vr4xnSDxMaL', value: 'EXAVITQu4vr4xnSDxMaL', text: 'Bella' },
-									{ key: 'VR6AewLTigWG4xSOukaG', value: 'VR6AewLTigWG4xSOukaG', text: 'Arnold' },
-									{ key: 'TxGEqnHWrfWFTfGW9XjX', value: 'TxGEqnHWrfWFTfGW9XjX', text: 'Josh' },
-									{ key: 'MF3mGyEYCl7XYWbV9V6O', value: 'MF3mGyEYCl7XYWbV9V6O', text: 'Elli' },
-									{ key: 'ErXwobaYiN019PkySvjV', value: 'ErXwobaYiN019PkySvjV', text: 'Antoni' },
-									{ key: 'AZnzlk1XvdvUeBnXmlld', value: 'AZnzlk1XvdvUeBnXmlld', text: 'Domi' },
+									{
+										key: 'EXAVITQu4vr4xnSDxMaL',
+										value: 'EXAVITQu4vr4xnSDxMaL',
+										text: 'Bella',
+									},
+									{
+										key: 'VR6AewLTigWG4xSOukaG',
+										value: 'VR6AewLTigWG4xSOukaG',
+										text: 'Arnold',
+									},
+									{
+										key: 'TxGEqnHWrfWFTfGW9XjX',
+										value: 'TxGEqnHWrfWFTfGW9XjX',
+										text: 'Josh',
+									},
+									{
+										key: 'MF3mGyEYCl7XYWbV9V6O',
+										value: 'MF3mGyEYCl7XYWbV9V6O',
+										text: 'Elli',
+									},
+									{
+										key: 'ErXwobaYiN019PkySvjV',
+										value: 'ErXwobaYiN019PkySvjV',
+										text: 'Antoni',
+									},
+									{
+										key: 'AZnzlk1XvdvUeBnXmlld',
+										value: 'AZnzlk1XvdvUeBnXmlld',
+										text: 'Domi',
+									},
 								]}
 								style={{
 									display: 'flex',
@@ -201,9 +233,10 @@ export default function Home() {
 										</div>
 									);
 								})}
-							
 							</div>
-							<button className={styles.clearButton} onClick={endSession}>Clear Conversation</button>
+							<button className={styles.clearButton} onClick={endSession}>
+								Clear Conversation
+							</button>
 						</Grid.Column>
 					</Grid>
 				</main>
